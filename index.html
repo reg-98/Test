@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Little Sprouts Clothing</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: #f8f9fa;
+      color: #333;
+    }
+
+    header {
+      background: #4CAF50;
+      color: white;
+      padding: 1rem;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 1.8rem;
+    }
+
+    .hero {
+      padding: 1.5rem;
+      text-align: center;
+      background: #fff;
+    }
+
+    .hero h2 {
+      font-size: 1.4rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .hero p {
+      margin-bottom: 1rem;
+    }
+
+    .hero button {
+      background: #4CAF50;
+      color: white;
+      padding: 0.8rem 1.4rem;
+      border: none;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .products {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      padding: 20px;
+    }
+
+    .product {
+      background: white;
+      padding: 12px;
+      border-radius: 10px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+      text-align: center;
+    }
+
+    .product img {
+      width: 100%;
+      height: auto;
+      border-radius: 6px;
+    }
+
+    .product h3 {
+      font-size: 1rem;
+      margin: 10px 0 5px;
+    }
+
+    .product p {
+      color: #4CAF50;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    footer {
+      background: #4CAF50;
+      color: white;
+      text-align: center;
+      padding: 1rem;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 600px) {
+      .hero h2 {
+        font-size: 1.2rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Little Sprouts Clothing</h1>
+  </header>
+
+  <section class="hero">
+    <h2>Soft. Stylish. Sustainable.</h2>
+    <p>Shop adorable, eco-friendly clothes for kids of all ages.</p>
+    <button>Shop Now</button>
+  </section>
+
+  <section class="products">
+    <div class="product">
+      <img src="https://via.placeholder.com/250x250?text=Baby+Onesie" alt="Product 1">
+      <h3>Organic Baby Onesie</h3>
+      <p>£12.99</p>
+      <button>Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/250x250?text=Toddler+T-Shirt" alt="Product 2">
+      <h3>Toddler T-Shirt</h3>
+      <p>£9.99</p>
+      <button>Add to Cart</button>
+    </div>
+
+    <div class="product">
+      <img src="https://via.placeholder.com/250x250?text=Kids+Hoodie" alt="Product 3">
+      <h3>Kids' Hoodie</h3>
+      <p>£19.99</p>
+      <button>Add to Cart</button>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Little Sprouts Clothing · All rights reserved
+  </footer>
+
+</body>
+</html>
