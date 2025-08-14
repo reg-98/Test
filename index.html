@@ -1,139 +1,162 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Little Sprouts Clothing</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      background: #f8f9fa;
-      color: #333;
-    }
-
-    header {
-      background: #4CAF50;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 1.8rem;
-    }
-
-    .hero {
-      padding: 1.5rem;
-      text-align: center;
-      background: #fff;
-    }
-
-    .hero h2 {
-      font-size: 1.4rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .hero p {
-      margin-bottom: 1rem;
-    }
-
-    .hero button {
-      background: #4CAF50;
-      color: white;
-      padding: 0.8rem 1.4rem;
-      border: none;
-      font-size: 1rem;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-
-    .products {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-      gap: 16px;
-      padding: 20px;
-    }
-
-    .product {
-      background: white;
-      padding: 12px;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-      text-align: center;
-    }
-
-    .product img {
-      width: 100%;
-      height: auto;
-      border-radius: 6px;
-    }
-
-    .product h3 {
-      font-size: 1rem;
-      margin: 10px 0 5px;
-    }
-
-    .product p {
-      color: #4CAF50;
-      font-weight: bold;
-      margin-bottom: 10px;
-    }
-
-    footer {
-      background: #4CAF50;
-      color: white;
-      text-align: center;
-      padding: 1rem;
-      margin-top: 2rem;
-    }
-
-    @media (max-width: 600px) {
-      .hero h2 {
-        font-size: 1.2rem;
-      }
-    }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>M&F Roofing – Simple Calculator</title>
+<style>
+  body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; margin: 0; padding: 16px; background: #f6f7f8; }
+  h1 { font-size: 20px; text-align:center; margin-bottom: 16px; }
+  .card { background:#fff; border:1px solid #ccc; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
+  label { display:block; font-weight:600; margin-top: 8px; }
+  input, select, button { width: 100%; font-size: 16px; padding: 10px; margin-top: 4px; border:1px solid #ccc; border-radius: 8px; }
+  button { background:#007aff; color:#fff; font-weight:600; cursor:pointer; margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; margin-top: 14px; }
+  th, td { border: 1px solid #ccc; padding: 8px; font-size: 15px; text-align:center; }
+  th { background: #f0f0f0; }
+</style>
 </head>
 <body>
+<h1>M&F Roofing Ltd – Materials Calculator</h1>
 
-  <header>
-    <h1>Little Sprouts Clothing</h1>
-  </header>
+<div class="card">
+  <label>Eaves Length (m)</label>
+  <input id="length" type="number" step="0.1" value="10">
 
-  <section class="hero">
-    <h2>Soft. Stylish. Sustainable.</h2>
-    <p>Shop adorable, eco-friendly clothes for kids of all ages.</p>
-    <button>Shop Now</button>
-  </section>
+  <label>Ridge-to-Fascia (Slope) Length (m)</label>
+  <input id="width" type="number" step="0.1" value="5">
 
-  <section class="products">
-    <div class="product">
-      <img src="https://via.placeholder.com/250x250?text=Baby+Onesie" alt="Product 1">
-      <h3>Organic Baby Onesie</h3>
-      <p>£12.99</p>
-      <button>Add to Cart</button>
-    </div>
+  <label>Batten Gauge (inches)</label>
+  <input id="gaugeIn" type="number" step="0.1" value="13.25">
 
-    <div class="product">
-      <img src="https://via.placeholder.com/250x250?text=Toddler+T-Shirt" alt="Product 2">
-      <h3>Toddler T-Shirt</h3>
-      <p>£9.99</p>
-      <button>Add to Cart</button>
-    </div>
+  <label>Tile Waste (%)</label>
+  <input id="tileWaste" type="number" step="1" value="7">
 
-    <div class="product">
-      <img src="https://via.placeholder.com/250x250?text=Kids+Hoodie" alt="Product 3">
-      <h3>Kids' Hoodie</h3>
-      <p>£19.99</p>
-      <button>Add to Cart</button>
-    </div>
-  </section>
+  <label>Number of Verges</label>
+  <input id="verges" type="number" step="1" value="2">
 
-  <footer>
-    &copy; 2025 Little Sprouts Clothing · All rights reserved
-  </footer>
+  <label>Fixing Spec</label>
+  <select id="fixSpec">
+    <option value="nail">Nail only (1 per tile)</option>
+    <option value="perimeter">Nail + clips on perimeter</option>
+    <option value="all">Nail + clip every tile</option>
+  </select>
 
+  <label>Tile Cover Width (m)</label>
+  <input id="tileWidth" type="number" step="0.005" value="0.30">
+
+  <label>Two Slopes (duo-pitch)</label>
+  <select id="twoSlopes">
+    <option value="yes" selected>Yes</option>
+    <option value="no">No</option>
+  </select>
+
+  <label>Hip Length (m)</label>
+  <input id="hip" type="number" step="0.1" value="0">
+
+  <label>Valley Length (m)</label>
+  <input id="valley" type="number" step="0.1" value="0">
+
+  <label>Eaves Tray Piece Length (m)</label>
+  <input id="trayLen" type="number" step="0.1" value="1.5">
+
+  <label>Eaves Tray Overlap (m)</label>
+  <input id="trayLap" type="number" step="0.01" value="0.1524">
+
+  <button id="calcBtn" type="button">Calculate</button>
+</div>
+
+<div class="card">
+  <table>
+    <thead>
+      <tr><th>Material</th><th>Quantity</th></tr>
+    </thead>
+    <tbody id="results"></tbody>
+  </table>
+</div>
+
+<script>
+function n(id){ return parseFloat(document.getElementById(id).value)||0; }
+function v(id){ return document.getElementById(id).value; }
+
+function calc(){
+  const L = n('length');
+  const W = n('width');
+  const two = v('twoSlopes')==='yes';
+  const gaugeIn = n('gaugeIn');
+  const verges = Math.round(n('verges'));
+  const hip = n('hip');
+  const valley = n('valley');
+  const tileWaste = n('tileWaste');
+  const tileWidth = n('tileWidth');
+  const fixSpec = v('fixSpec');
+  const trayLen = n('trayLen');
+  const trayLap = n('trayLap');
+
+  const area = L * W * (two ? 2 : 1);
+  const eavesTotal = L * (two ? 2 : 1);
+  const ridge = L;
+  const gaugeM = gaugeIn * 0.0254;
+  const courses = gaugeM>0 ? Math.ceil(W / gaugeM) : 0;
+  const tilesPerCourse = tileWidth>0 ? Math.ceil(L / tileWidth) : 0;
+
+  const tilesPerM2 = 10.6;
+  const tiles = Math.ceil(area * tilesPerM2 * (1 + tileWaste/100));
+  let nails = Math.ceil(tiles * 1.05);
+  let clips = 0;
+  if(fixSpec === 'perimeter'){
+    const vergeEdgeTiles = courses * 2;
+    const eavesEdgeTiles = tilesPerCourse * (two ? 2 : 1);
+    clips = Math.ceil((vergeEdgeTiles + eavesEdgeTiles) * 1.05);
+  } else if(fixSpec === 'all'){
+    clips = Math.ceil(tiles * 1.05);
+  }
+  const battensPerM2 = gaugeM>0 ? (1.0/gaugeM) : 0;
+  const battens = Math.ceil(area * battensPerM2 * 1.05);
+  const underlay = Math.ceil(area * 1.05);
+  const vp300Rolls = Math.ceil(underlay / 50.0);
+  const dryVergeUnits = Math.ceil(courses * verges * 1.05);
+  const ridgeKits = Math.ceil(ridge / 5.0);
+  const ridgeCaps = Math.ceil((ridge + hip) * 3.0);
+  const ridgeEnds = verges>0 ? 2 : 0;
+  const overFascia = Math.ceil(eavesTotal);
+  const effectivePerPiece = Math.max(0, trayLen - trayLap);
+  const trayPieces = effectivePerPiece>0 ? Math.ceil(eavesTotal / effectivePerPiece) : 0;
+  const trayTotalLen = Math.ceil(trayPieces * trayLen);
+  const rafterRoll = Math.ceil(L);
+  const grpValley = Math.ceil(valley);
+
+  const rows = [
+    ["Tiles – Russell Grampian (pcs)", tiles],
+    ["Tile nails (pcs)", nails],
+    ["Tile clips (pcs)", clips],
+    ["Battens 25×50 (m length)", battens],
+    ["Underlay area (m²)", underlay],
+    ["Underlay rolls – Protect VP300 (rolls)", vp300Rolls],
+    ["Dry Verge – large format (pcs)", dryVergeUnits],
+    ["Ridge kits – RussFast 5 m (kits)", ridgeKits],
+    ["Ridge caps (pcs)", ridgeCaps],
+    ["Ridge cap ends (pcs)", ridgeEnds],
+    ["Over Fascia Vents (m)", overFascia],
+    ["Eaves Trays – pieces (pcs)", trayPieces],
+    ["Eaves Trays – total length (m)", trayTotalLen],
+    ["Rafter Roll (m)", rafterRoll],
+    ["GRP Valley Troughs (m)", grpValley]
+  ];
+
+  const tbody=document.getElementById('results');
+  tbody.innerHTML="";
+  rows.forEach(([name, qty])=>{
+    const tr=document.createElement('tr');
+    tr.innerHTML = `<td>${name}</td><td>${qty}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', function(){
+  document.getElementById('calcBtn').addEventListener('click', calc);
+  calc();
+});
+</script>
 </body>
 </html>
