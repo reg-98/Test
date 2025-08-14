@@ -1,236 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>M&F Roofing – Materials Calculator (Packs)</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>M&F Roofing Calculator</title>
 <style>
-  body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; margin: 0; padding: 16px; background: #f6f7f8; }
-  h1 { font-size: 20px; text-align:center; margin-bottom: 16px; }
-  .card { background:#fff; border:1px solid #ccc; border-radius: 10px; padding: 14px; margin-bottom: 14px; }
-  label { display:block; font-weight:600; margin-top: 8px; }
-  input, select, button { width: 100%; font-size: 16px; padding: 10px; margin-top: 4px; border:1px solid #ccc; border-radius: 8px; }
-  button { background:#007aff; color:#fff; font-weight:600; cursor:pointer; margin-top: 16px; }
-  table { width: 100%; border-collapse: collapse; margin-top: 14px; }
-  th, td { border: 1px solid #ccc; padding: 8px; font-size: 15px; text-align:center; }
-  th { background: #f0f0f0; }
-  .row { display:flex; gap:10px; flex-wrap:wrap; }
-  .row > div { flex:1 1 200px; }
+  body { font-family: Arial, sans-serif; padding: 20px; background: #f4f4f4; }
+  h1 { text-align: center; }
+  label { display: block; margin-top: 10px; font-weight: bold; }
+  input, select { width: 100%; padding: 8px; margin-top: 5px; }
+  button { width: 100%; padding: 12px; margin-top: 15px; background: #333; color: #fff; border: none; }
+  table { width: 100%; border-collapse: collapse; margin-top: 20px; background: #fff; }
+  th, td { padding: 10px; border: 1px solid #ddd; text-align: left; }
+  th { background: #eee; }
 </style>
 </head>
 <body>
-<h1>M&F Roofing Ltd – Materials Calculator</h1>
 
-<div class="card">
-  <div class="row">
-    <div>
-      <label>Eaves Length (m)</label>
-      <input id="length" type="number" step="0.1" value="7.5">
-    </div>
-    <div>
-      <label>Ridge-to-Fascia (Slope) Length (m)</label>
-      <input id="width" type="number" step="0.1" value="6.3">
-    </div>
-  </div>
+<h1>M&F Roofing Calculator</h1>
 
-  <div class="row">
-    <div>
-      <label>Batten Gauge (inches)</label>
-      <input id="gaugeIn" type="number" step="0.1" value="13.25">
-    </div>
-    <div>
-      <label>Tile Waste (%)</label>
-      <input id="tileWaste" type="number" step="1" value="7">
-    </div>
-    <div>
-      <label>Number of Verges</label>
-      <input id="verges" type="number" step="1" value="2">
-    </div>
-  </div>
+<label>Roof Length (eaves run, m)</label>
+<input type="number" id="length" value="7.5">
 
-  <div class="row">
-    <div>
-      <label>Fixing Spec</label>
-      <select id="fixSpec">
-        <option value="nail">Nail only (1 per tile)</option>
-        <option value="perimeter">Nail + clips on perimeter</option>
-        <option value="all">Nail + clip every tile</option>
-      </select>
-    </div>
-    <div>
-      <label>Tile Cover Width (m)</label>
-      <input id="tileWidth" type="number" step="0.005" value="0.30">
-    </div>
-    <div>
-      <label>Two Slopes (duo-pitch)</label>
-      <select id="twoSlopes">
-        <option value="yes" selected>Yes</option>
-        <option value="no">No</option>
-      </select>
-    </div>
-  </div>
+<label>Roof Width (ridge to eaves, m)</label>
+<input type="number" id="width" value="6.3">
 
-  <div class="row">
-    <div>
-      <label>Hip Length (m)</label>
-      <input id="hip" type="number" step="0.1" value="0">
-    </div>
-    <div>
-      <label>Valley Length (m)</label>
-      <input id="valley" type="number" step="0.1" value="0">
-    </div>
-    <div>
-      <label>Batten Stock Length</label>
-      <select id="battenLen">
-        <option value="3.0">3.0 m</option>
-        <option value="3.6">3.6 m</option>
-        <option value="4.2">4.2 m</option>
-        <option value="4.8" selected>4.8 m</option>
-      </select>
-    </div>
-  </div>
+<label>Duo-pitch? (two slopes)</label>
+<select id="twoSlopes">
+  <option value="yes" selected>Yes</option>
+  <option value="no">No</option>
+</select>
 
-  <div class="row">
-    <div>
-      <label>Eaves Tray Piece Length (m)</label>
-      <input id="trayLen" type="number" step="0.1" value="1.5">
-    </div>
-    <div>
-      <label>Eaves Tray Overlap (m)</label>
-      <input id="trayLap" type="number" step="0.01" value="0.1524">
-    </div>
-  </div>
+<label>Batten Gauge (mm)</label>
+<input type="number" id="gauge" value="337">
 
-  <button id="calcBtn" type="button">Calculate</button>
-</div>
+<label>Number of Verges (gable ends)</label>
+<input type="number" id="verges" value="2">
 
-<div class="card">
-  <table>
-    <thead>
-      <tr><th>Material</th><th>Qty (units)</th><th>Packs (rounded ↑ to 0.5)</th></tr>
-    </thead>
-    <tbody id="results"></tbody>
-  </table>
-</div>
+<label>Stock Batten Length (m)</label>
+<select id="battenLength">
+  <option value="3.0">3.0</option>
+  <option value="3.6">3.6</option>
+  <option value="4.2">4.2</option>
+  <option value="4.8" selected>4.8</option>
+</select>
+
+<label>Tile Waste (%)</label>
+<input type="number" id="waste" value="7">
+
+<button id="calcBtn" type="button">Calculate</button>
+
+<table id="results">
+  <thead>
+    <tr><th>Material</th><th>Qty</th><th>Packs</th></tr>
+  </thead>
+  <tbody></tbody>
+</table>
 
 <script>
-function n(id){ return parseFloat(document.getElementById(id).value)||0; }
-function v(id){ return document.getElementById(id).value; }
-function ceilHalf(x){ return Math.ceil(x*2)/2; }      // round UP to nearest 0.5
-function ceilInt(x){ return Math.ceil(x); }
+function roundUpHalf(num){ return Math.ceil(num*2)/2; }
 
-function calc(){
-  const L = n('length');                 // eaves (one run)
-  const W = n('width');                  // slope (ridge -> fascia)
-  const two = v('twoSlopes')==='yes';
-  const gaugeIn = n('gaugeIn');          // inches
-  const verges = Math.max(0, Math.round(n('verges')));
-  const hip = n('hip');
-  const valley = n('valley');
-  const tileWaste = n('tileWaste');
-  const tileWidth = n('tileWidth');
-  const fixSpec = v('fixSpec');
-  const trayLen = n('trayLen');
-  const trayLap = n('trayLap');
-  const battenLen = n('battenLen');
+function calculate() {
+  const L = parseFloat(document.getElementById('length').value) || 0;     // eaves run (m)
+  const W = parseFloat(document.getElementById('width').value) || 0;      // ridge-to-eaves slope (m)
+  const two = document.getElementById('twoSlopes').value === 'yes';
+  const gaugeM = (parseFloat(document.getElementById('gauge').value) || 0) / 1000; // mm -> m
+  const verges = Math.max(0, Math.round(parseFloat(document.getElementById('verges').value) || 0));
+  const battenLen = parseFloat(document.getElementById('battenLength').value) || 4.8;
+  const wastePct = (parseFloat(document.getElementById('waste').value) || 0) / 100;
 
   // Areas & runs
-  const area = L * W * (two ? 2 : 1);         // m²
-  const eavesTotal = L * (two ? 2 : 1);       // m
-  const ridge = L;                             // m
+  const roofArea = L * W * (two ? 2 : 1);
+  const eavesTotal = L * (two ? 2 : 1);   // both eaves if duo-pitch
+  const ridgeLen = L;
 
-  // Courses and tiles per course
-  const gaugeM = gaugeIn * 0.0254;            // inches → metres
-  const courses = gaugeM>0 ? Math.ceil(W / gaugeM) : 0;
-  const tilesPerCourse = tileWidth>0 ? Math.ceil(L / tileWidth) : 0;
+  // Courses (rows of battens)
+  const courses = gaugeM > 0 ? Math.ceil(W / gaugeM) : 0;
 
-  // Russell Grampian tiles
-  const tilesPerM2 = 10.6; // at 100 mm headlap
-  const tilesQty = ceilInt(area * tilesPerM2 * (1 + tileWaste/100));
-  const tilePackSize = 192;
-  const tilePacksRaw = tilesQty / tilePackSize;
-  const tilePacks = ceilHalf(tilePacksRaw); // round up to 0.5 pack (96 tiles)
-  const tilePacksLabel = tilePacks % 1 === 0 ? `${tilePacks} packs` : `${tilePacks} packs (half-pack allowed)`;
+  // Tiles – Russell Grampian (use 10.6 tiles/m² at 100 mm headlap)
+  const tilesPerM2 = 10.6;
+  const tiles = Math.ceil(roofArea * tilesPerM2 * (1 + wastePct));
+  const tilePacks = roundUpHalf(tiles / 192); // 192/pack, round up to 0.5
 
-  // Nails (1 per tile +5%)
-  const nailsQty = ceilInt(tilesQty * 1.05);
+  // Battens – total metreage, then sticks & packs
+  const battensPerM2 = gaugeM > 0 ? (1.0 / gaugeM) : 0; // m per m²
+  const battenMetres = Math.ceil(roofArea * battensPerM2 * (1 + wastePct));
+  const battenSticks = Math.ceil(battenMetres / battenLen);
+  const battenPacks = roundUpHalf(battenSticks / 10);   // 10 sticks/pack
 
-  // Clips
-  let clipsQty = 0;
-  if(fixSpec === 'perimeter'){
-    const vergeEdgeTiles = courses * 2;
-    const eavesEdgeTiles = tilesPerCourse * (two ? 2 : 1);
-    clipsQty = ceilInt((vergeEdgeTiles + eavesEdgeTiles) * 1.05);
-  } else if (fixSpec === 'all'){
-    clipsQty = ceilInt(tilesQty * 1.05);
-  }
+  // Rafter roll – both eaves on duo-pitch
+  const rafterRoll = Math.ceil(L * (two ? 2 : 1));
 
-  // Battens (m) from gauge + 5% waste
-  const battensPerM2 = gaugeM>0 ? (1.0/gaugeM) : 0;   // m per m²
-  const battensMeters = area * battensPerM2 * 1.05;
-  const battensSticks = ceilInt(battensMeters / battenLen);
-  const battenPackSize = 10;                           // 10 sticks per pack
-  const battenPacksRaw = battensSticks / battenPackSize;
-  const battenPacks = ceilHalf(battenPacksRaw);
-  const battenPacksLabel = battenPacks % 1 === 0 ? `${battenPacks} packs` : `${battenPacks} packs (half-pack allowed)`;
-
-  // Underlay (Protect VP300)
-  const underlayM2 = ceilInt(area * 1.05);
-  const underlayRolls = ceilInt(underlayM2 / 50.0);    // 1m x 50m = 50 m²
-
-  // Dry verge units: 1 per course per verge +5%
-  const dryVergeUnits = ceilInt(courses * verges * 1.05);
-
-  // Ridge & accessories
-  const ridgeKits = ceilInt(ridge / 5.0);              // RussFast 5m kits
-  const ridgeCaps = ceilInt((ridge + hip) * 3.0);      // 3 caps/m
-  const ridgeEnds = verges>0 ? 2 : 0;
-
-  // Over-fascia vents: per metre of eaves
-  const overFasciaM = ceilInt(eavesTotal);
-
-  // Eaves trays with 6" (0.1524 m) overlap
+  // Eaves trays – allow 6" (0.1524 m) overlap per joint; assume 1.5 m tray pieces
+  const trayLen = 1.5, trayLap = 0.1524;
   const effectivePerPiece = Math.max(0, trayLen - trayLap);
-  const trayPieces = effectivePerPiece>0 ? ceilInt(eavesTotal / effectivePerPiece) : 0;
-  const trayTotalLen = ceilInt(trayPieces * trayLen);
+  const trayPieces = effectivePerPiece > 0 ? Math.ceil(eavesTotal / effectivePerPiece) : 0;
+  const eavesTrayTotalLen = Math.ceil(trayPieces * trayLen);
 
-  // Rafter roll measured by plot width (one eaves run)
-  const rafterRollM = ceilInt(L);
+  // Dry verge units – 1 per course per verge
+  const dryVergeUnits = courses * verges; // add spare on order if you prefer
 
-  // GRP valley troughs
-  const grpValleyM = ceilInt(valley);
-
-  // Render
+  // Build table
   const rows = [
-    ["Tiles – Russell Grampian", `${tilesQty} pcs`, `${tilePacksLabel}`],
-    ["Tile nails", `${nailsQty} pcs`, "—"],
-    ["Tile clips", `${clipsQty} pcs`, "—"],
-    [`Battens 25×50 (${battenLen.toFixed(1)} m sticks)`, `${battensSticks} sticks`, `${battenPacksLabel}`],
-    ["Underlay area (VP300)", `${underlayM2} m²`, `${underlayRolls} rolls (50 m²/roll)`],
-    ["Dry Verge – large format", `${dryVergeUnits} pcs`, "—"],
-    ["Ridge kits – RussFast 5 m", `${ridgeKits} kits`, "—"],
-    ["Ridge caps", `${ridgeCaps} pcs`, "—"],
-    ["Ridge cap ends", `${ridgeEnds} pcs`, "—"],
-    ["Over Fascia Vents", `${overFasciaM} m`, "—"],
+    ["Tiles – Russell Grampian", `${tiles} pcs`, `${tilePacks} packs (192/pack)`],
+    ["Battens 25×50 – total", `${battenMetres} m`, "—"],
+    [`Battens 25×50 (${battenLen.toFixed(1)} m sticks)`, `${battenSticks} sticks`, `${battenPacks} packs (10/stk pack)`],
+    ["Dry Verge – large format", `${dryVergeUnits} units`, "—"],
+    ["Rafter Roll", `${rafterRoll} m`, "—"],
     ["Eaves Trays – pieces", `${trayPieces} pcs`, "—"],
-    ["Eaves Trays – total length", `${trayTotalLen} m`, "—"],
-    ["Rafter Roll", `${rafterRollM} m`, "—"],
-    ["GRP Valley Troughs", `${grpValleyM} m`, "—"]
+    ["Eaves Trays – total length", `${eavesTrayTotalLen} m`, "—"],
+    ["Underlay area (for VP300)", `${Math.ceil(roofArea * 1.05)} m²`, "≈ rolls = m² / 50"]
   ];
 
-  const tbody = document.getElementById('results');
-  tbody.innerHTML = "";
-  rows.forEach(([name, qty, packs])=>{
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${name}</td><td>${qty}</td><td>${packs}</td>`;
-    tbody.appendChild(tr);
-  });
+  const tbody = document.querySelector('#results tbody');
+  tbody.innerHTML = rows.map(r => `<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td></tr>`).join("");
 }
 
-document.addEventListener('DOMContentLoaded', function(){
-  document.getElementById('calcBtn').addEventListener('click', calc);
-  calc();
-});
+document.getElementById('calcBtn').addEventListener('click', calculate);
+document.addEventListener('DOMContentLoaded', calculate);
 </script>
+
 </body>
 </html>
