@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>M&F Roofing – Simple Calculator</title>
+<title>M&F Roofing – Materials Calculator (Packs)</title>
 <style>
   body { font-family: -apple-system, BlinkMacSystemFont, Arial, sans-serif; margin: 0; padding: 16px; background: #f6f7f8; }
   h1 { font-size: 20px; text-align:center; margin-bottom: 16px; }
@@ -14,54 +14,92 @@
   table { width: 100%; border-collapse: collapse; margin-top: 14px; }
   th, td { border: 1px solid #ccc; padding: 8px; font-size: 15px; text-align:center; }
   th { background: #f0f0f0; }
+  .row { display:flex; gap:10px; flex-wrap:wrap; }
+  .row > div { flex:1 1 200px; }
 </style>
 </head>
 <body>
 <h1>M&F Roofing Ltd – Materials Calculator</h1>
 
 <div class="card">
-  <label>Eaves Length (m)</label>
-  <input id="length" type="number" step="0.1" value="10">
+  <div class="row">
+    <div>
+      <label>Eaves Length (m)</label>
+      <input id="length" type="number" step="0.1" value="7.5">
+    </div>
+    <div>
+      <label>Ridge-to-Fascia (Slope) Length (m)</label>
+      <input id="width" type="number" step="0.1" value="6.3">
+    </div>
+  </div>
 
-  <label>Ridge-to-Fascia (Slope) Length (m)</label>
-  <input id="width" type="number" step="0.1" value="5">
+  <div class="row">
+    <div>
+      <label>Batten Gauge (inches)</label>
+      <input id="gaugeIn" type="number" step="0.1" value="13.25">
+    </div>
+    <div>
+      <label>Tile Waste (%)</label>
+      <input id="tileWaste" type="number" step="1" value="7">
+    </div>
+    <div>
+      <label>Number of Verges</label>
+      <input id="verges" type="number" step="1" value="2">
+    </div>
+  </div>
 
-  <label>Batten Gauge (inches)</label>
-  <input id="gaugeIn" type="number" step="0.1" value="13.25">
+  <div class="row">
+    <div>
+      <label>Fixing Spec</label>
+      <select id="fixSpec">
+        <option value="nail">Nail only (1 per tile)</option>
+        <option value="perimeter">Nail + clips on perimeter</option>
+        <option value="all">Nail + clip every tile</option>
+      </select>
+    </div>
+    <div>
+      <label>Tile Cover Width (m)</label>
+      <input id="tileWidth" type="number" step="0.005" value="0.30">
+    </div>
+    <div>
+      <label>Two Slopes (duo-pitch)</label>
+      <select id="twoSlopes">
+        <option value="yes" selected>Yes</option>
+        <option value="no">No</option>
+      </select>
+    </div>
+  </div>
 
-  <label>Tile Waste (%)</label>
-  <input id="tileWaste" type="number" step="1" value="7">
+  <div class="row">
+    <div>
+      <label>Hip Length (m)</label>
+      <input id="hip" type="number" step="0.1" value="0">
+    </div>
+    <div>
+      <label>Valley Length (m)</label>
+      <input id="valley" type="number" step="0.1" value="0">
+    </div>
+    <div>
+      <label>Batten Stock Length</label>
+      <select id="battenLen">
+        <option value="3.0">3.0 m</option>
+        <option value="3.6">3.6 m</option>
+        <option value="4.2">4.2 m</option>
+        <option value="4.8" selected>4.8 m</option>
+      </select>
+    </div>
+  </div>
 
-  <label>Number of Verges</label>
-  <input id="verges" type="number" step="1" value="2">
-
-  <label>Fixing Spec</label>
-  <select id="fixSpec">
-    <option value="nail">Nail only (1 per tile)</option>
-    <option value="perimeter">Nail + clips on perimeter</option>
-    <option value="all">Nail + clip every tile</option>
-  </select>
-
-  <label>Tile Cover Width (m)</label>
-  <input id="tileWidth" type="number" step="0.005" value="0.30">
-
-  <label>Two Slopes (duo-pitch)</label>
-  <select id="twoSlopes">
-    <option value="yes" selected>Yes</option>
-    <option value="no">No</option>
-  </select>
-
-  <label>Hip Length (m)</label>
-  <input id="hip" type="number" step="0.1" value="0">
-
-  <label>Valley Length (m)</label>
-  <input id="valley" type="number" step="0.1" value="0">
-
-  <label>Eaves Tray Piece Length (m)</label>
-  <input id="trayLen" type="number" step="0.1" value="1.5">
-
-  <label>Eaves Tray Overlap (m)</label>
-  <input id="trayLap" type="number" step="0.01" value="0.1524">
+  <div class="row">
+    <div>
+      <label>Eaves Tray Piece Length (m)</label>
+      <input id="trayLen" type="number" step="0.1" value="1.5">
+    </div>
+    <div>
+      <label>Eaves Tray Overlap (m)</label>
+      <input id="trayLap" type="number" step="0.01" value="0.1524">
+    </div>
+  </div>
 
   <button id="calcBtn" type="button">Calculate</button>
 </div>
@@ -69,7 +107,7 @@
 <div class="card">
   <table>
     <thead>
-      <tr><th>Material</th><th>Quantity</th></tr>
+      <tr><th>Material</th><th>Qty (units)</th><th>Packs (rounded ↑ to 0.5)</th></tr>
     </thead>
     <tbody id="results"></tbody>
   </table>
@@ -78,13 +116,15 @@
 <script>
 function n(id){ return parseFloat(document.getElementById(id).value)||0; }
 function v(id){ return document.getElementById(id).value; }
+function ceilHalf(x){ return Math.ceil(x*2)/2; }      // round UP to nearest 0.5
+function ceilInt(x){ return Math.ceil(x); }
 
 function calc(){
-  const L = n('length');
-  const W = n('width');
+  const L = n('length');                 // eaves (one run)
+  const W = n('width');                  // slope (ridge -> fascia)
   const two = v('twoSlopes')==='yes';
-  const gaugeIn = n('gaugeIn');
-  const verges = Math.round(n('verges'));
+  const gaugeIn = n('gaugeIn');          // inches
+  const verges = Math.max(0, Math.round(n('verges')));
   const hip = n('hip');
   const valley = n('valley');
   const tileWaste = n('tileWaste');
@@ -92,63 +132,97 @@ function calc(){
   const fixSpec = v('fixSpec');
   const trayLen = n('trayLen');
   const trayLap = n('trayLap');
+  const battenLen = n('battenLen');
 
-  const area = L * W * (two ? 2 : 1);
-  const eavesTotal = L * (two ? 2 : 1);
-  const ridge = L;
-  const gaugeM = gaugeIn * 0.0254;
+  // Areas & runs
+  const area = L * W * (two ? 2 : 1);         // m²
+  const eavesTotal = L * (two ? 2 : 1);       // m
+  const ridge = L;                             // m
+
+  // Courses and tiles per course
+  const gaugeM = gaugeIn * 0.0254;            // inches → metres
   const courses = gaugeM>0 ? Math.ceil(W / gaugeM) : 0;
   const tilesPerCourse = tileWidth>0 ? Math.ceil(L / tileWidth) : 0;
 
-  const tilesPerM2 = 10.6;
-  const tiles = Math.ceil(area * tilesPerM2 * (1 + tileWaste/100));
-  let nails = Math.ceil(tiles * 1.05);
-  let clips = 0;
+  // Russell Grampian tiles
+  const tilesPerM2 = 10.6; // at 100 mm headlap
+  const tilesQty = ceilInt(area * tilesPerM2 * (1 + tileWaste/100));
+  const tilePackSize = 192;
+  const tilePacksRaw = tilesQty / tilePackSize;
+  const tilePacks = ceilHalf(tilePacksRaw); // round up to 0.5 pack (96 tiles)
+  const tilePacksLabel = tilePacks % 1 === 0 ? `${tilePacks} packs` : `${tilePacks} packs (half-pack allowed)`;
+
+  // Nails (1 per tile +5%)
+  const nailsQty = ceilInt(tilesQty * 1.05);
+
+  // Clips
+  let clipsQty = 0;
   if(fixSpec === 'perimeter'){
     const vergeEdgeTiles = courses * 2;
     const eavesEdgeTiles = tilesPerCourse * (two ? 2 : 1);
-    clips = Math.ceil((vergeEdgeTiles + eavesEdgeTiles) * 1.05);
-  } else if(fixSpec === 'all'){
-    clips = Math.ceil(tiles * 1.05);
+    clipsQty = ceilInt((vergeEdgeTiles + eavesEdgeTiles) * 1.05);
+  } else if (fixSpec === 'all'){
+    clipsQty = ceilInt(tilesQty * 1.05);
   }
-  const battensPerM2 = gaugeM>0 ? (1.0/gaugeM) : 0;
-  const battens = Math.ceil(area * battensPerM2 * 1.05);
-  const underlay = Math.ceil(area * 1.05);
-  const vp300Rolls = Math.ceil(underlay / 50.0);
-  const dryVergeUnits = Math.ceil(courses * verges * 1.05);
-  const ridgeKits = Math.ceil(ridge / 5.0);
-  const ridgeCaps = Math.ceil((ridge + hip) * 3.0);
-  const ridgeEnds = verges>0 ? 2 : 0;
-  const overFascia = Math.ceil(eavesTotal);
-  const effectivePerPiece = Math.max(0, trayLen - trayLap);
-  const trayPieces = effectivePerPiece>0 ? Math.ceil(eavesTotal / effectivePerPiece) : 0;
-  const trayTotalLen = Math.ceil(trayPieces * trayLen);
-  const rafterRoll = Math.ceil(L);
-  const grpValley = Math.ceil(valley);
 
+  // Battens (m) from gauge + 5% waste
+  const battensPerM2 = gaugeM>0 ? (1.0/gaugeM) : 0;   // m per m²
+  const battensMeters = area * battensPerM2 * 1.05;
+  const battensSticks = ceilInt(battensMeters / battenLen);
+  const battenPackSize = 10;                           // 10 sticks per pack
+  const battenPacksRaw = battensSticks / battenPackSize;
+  const battenPacks = ceilHalf(battenPacksRaw);
+  const battenPacksLabel = battenPacks % 1 === 0 ? `${battenPacks} packs` : `${battenPacks} packs (half-pack allowed)`;
+
+  // Underlay (Protect VP300)
+  const underlayM2 = ceilInt(area * 1.05);
+  const underlayRolls = ceilInt(underlayM2 / 50.0);    // 1m x 50m = 50 m²
+
+  // Dry verge units: 1 per course per verge +5%
+  const dryVergeUnits = ceilInt(courses * verges * 1.05);
+
+  // Ridge & accessories
+  const ridgeKits = ceilInt(ridge / 5.0);              // RussFast 5m kits
+  const ridgeCaps = ceilInt((ridge + hip) * 3.0);      // 3 caps/m
+  const ridgeEnds = verges>0 ? 2 : 0;
+
+  // Over-fascia vents: per metre of eaves
+  const overFasciaM = ceilInt(eavesTotal);
+
+  // Eaves trays with 6" (0.1524 m) overlap
+  const effectivePerPiece = Math.max(0, trayLen - trayLap);
+  const trayPieces = effectivePerPiece>0 ? ceilInt(eavesTotal / effectivePerPiece) : 0;
+  const trayTotalLen = ceilInt(trayPieces * trayLen);
+
+  // Rafter roll measured by plot width (one eaves run)
+  const rafterRollM = ceilInt(L);
+
+  // GRP valley troughs
+  const grpValleyM = ceilInt(valley);
+
+  // Render
   const rows = [
-    ["Tiles – Russell Grampian (pcs)", tiles],
-    ["Tile nails (pcs)", nails],
-    ["Tile clips (pcs)", clips],
-    ["Battens 25×50 (m length)", battens],
-    ["Underlay area (m²)", underlay],
-    ["Underlay rolls – Protect VP300 (rolls)", vp300Rolls],
-    ["Dry Verge – large format (pcs)", dryVergeUnits],
-    ["Ridge kits – RussFast 5 m (kits)", ridgeKits],
-    ["Ridge caps (pcs)", ridgeCaps],
-    ["Ridge cap ends (pcs)", ridgeEnds],
-    ["Over Fascia Vents (m)", overFascia],
-    ["Eaves Trays – pieces (pcs)", trayPieces],
-    ["Eaves Trays – total length (m)", trayTotalLen],
-    ["Rafter Roll (m)", rafterRoll],
-    ["GRP Valley Troughs (m)", grpValley]
+    ["Tiles – Russell Grampian", `${tilesQty} pcs`, `${tilePacksLabel}`],
+    ["Tile nails", `${nailsQty} pcs`, "—"],
+    ["Tile clips", `${clipsQty} pcs`, "—"],
+    [`Battens 25×50 (${battenLen.toFixed(1)} m sticks)`, `${battensSticks} sticks`, `${battenPacksLabel}`],
+    ["Underlay area (VP300)", `${underlayM2} m²`, `${underlayRolls} rolls (50 m²/roll)`],
+    ["Dry Verge – large format", `${dryVergeUnits} pcs`, "—"],
+    ["Ridge kits – RussFast 5 m", `${ridgeKits} kits`, "—"],
+    ["Ridge caps", `${ridgeCaps} pcs`, "—"],
+    ["Ridge cap ends", `${ridgeEnds} pcs`, "—"],
+    ["Over Fascia Vents", `${overFasciaM} m`, "—"],
+    ["Eaves Trays – pieces", `${trayPieces} pcs`, "—"],
+    ["Eaves Trays – total length", `${trayTotalLen} m`, "—"],
+    ["Rafter Roll", `${rafterRollM} m`, "—"],
+    ["GRP Valley Troughs", `${grpValleyM} m`, "—"]
   ];
 
-  const tbody=document.getElementById('results');
-  tbody.innerHTML="";
-  rows.forEach(([name, qty])=>{
-    const tr=document.createElement('tr');
-    tr.innerHTML = `<td>${name}</td><td>${qty}</td>`;
+  const tbody = document.getElementById('results');
+  tbody.innerHTML = "";
+  rows.forEach(([name, qty, packs])=>{
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${name}</td><td>${qty}</td><td>${packs}</td>`;
     tbody.appendChild(tr);
   });
 }
